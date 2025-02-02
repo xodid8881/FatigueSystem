@@ -1,0 +1,81 @@
+fatigue-system:
+  prefix: "&a&l[피로도]&7"
+
+database:
+  type: yml # yml, mysql 소문자 유지
+  mysql:
+    host: localhost
+    port: 3306
+    user: root
+    password: password
+    database: minecraft
+
+check-event:
+  farm: true
+  mine: true
+  felling: true
+  fishing: true
+  hunt: true
+
+Custom-Crop-Interact:
+  apple_stage_6: "customcrops:cabbage"
+  cabbage_stage_4: "customcrops:cabbage"
+  chinese_cabbage_stage_4: "customcrops:chinese_cabbage"
+  corn_stage_4: "customcrops:corn"
+  eggplant_stage_4: "customcrops:eggplant"
+  garlic_stage_4: "customcrops:garlic"
+  grape_stage_4: "customcrops:grape"
+  hop_stage_4: "customcrops:hop"
+  pepper_stage_5: "customcrops:pepper"
+  pineapple_stage_4: "customcrops:pineapple"
+  pitaya_stage_6: "customcrops:pitaya"
+  tomato_stage_4: "customcrops:tomato"
+# 클릭형 커스텀 농작물
+
+Custom-Crop-Break:
+  거대한 양배추: "customcrops:gigantic_cabbage"
+  거대한 파인애플: "customcrops:gigantic_pineapple"
+  거대한 토마토: "customcrops:gigantic_tomato"
+# 파괴형 커스텀 농작물
+
+Custom-Crop-Interact-Point:
+  apple_stage_6: 4
+  cabbage_stage_4: 3
+  chinese_cabbage_stage_4: 3
+  corn_stage_4: 4
+  eggplant_stage_4: 3
+  garlic_stage_4: 4
+  grape_stage_4: 4
+  hop_stage_4: 4
+  pepper_stage_5: 3
+  pineapple_stage_4: 3
+  pitaya_stage_6: 3
+  tomato_stage_4: 3
+# 클릭형 커스텀 농작물 수확 시 들어오는 피로도
+
+Custom-Crop-Break-Point:
+  거대한 양배추: 5
+  거대한 파인애플: 5
+  거대한 토마토: 5
+# 파괴형 커스텀 농작물 수확 시 들어오는 피로도
+
+Farm-Point: 3
+# 일반 농작물 수확 시 들어오는 피로도
+
+Mining-Point: 5
+# 채광 시 들어오는 피로도
+
+Felling-Point: 7
+# 벌목 시 들어오는 피로도
+
+Hunt-Point: 30
+# 몹 을 죽일 시 마다 들어오는 피로도
+
+Fishing-Point: 25
+# 낚시 입질마다 들어오는 피로도
+
+# - 피로도 회복 아이템 정보 -------------------------------------
+item-material: RED_CANDLE
+item-display-name: "&a&l[&f&l피로도 회복&a&l]"
+item-lore:
+  - "&a&l- &r&7사용시에 피로도를 회복합니다."

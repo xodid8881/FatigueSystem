@@ -1,0 +1,16 @@
+name: FatigueSystem
+version: '${version}'
+main: org.hwabeag.fatiguesystem.FatigueSystem
+api-version: '1.13'
+
+softdepend:
+  - ItemsAdder
+  - PlaceholderAPI
+
+commands:
+  피로도:
+    description: 피로도 명령어 입니다.
+    usage: /피로도
+  피로도설정:
+    description: 피로도설정 명령어 입니다.
+    usage: /피로도설정
