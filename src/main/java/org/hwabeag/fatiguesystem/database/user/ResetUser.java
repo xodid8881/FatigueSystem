@@ -1,19 +1,19 @@
 package org.hwabeag.fatiguesystem.database.user;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.hwabeag.fatiguesystem.config.ConfigManager;
 
-import java.sql.*;
-import java.util.UUID;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
-public class InsertUser {
+public class ResetUser {
     private Connection connection;
     Statement statement = null;
-
     FileConfiguration Config = ConfigManager.getConfig("setting");
 
-    public Connection Open_Connection_User() {
+    public Connection Open_Connection_Player() {
         try {
             if (connection != null && !connection.isClosed()) {
                 return null;
@@ -40,18 +40,15 @@ public class InsertUser {
         return connection;
     }
 
-    public void UserInsert(Player player) {
-        UUID player_UUID = player.getUniqueId();
-        try (Connection conn = this.Open_Connection_User()) {
-            String sql = "INSERT INTO fatiguesystem_user (player_uuid, player_point) " +
-                    "VALUES (?, ?)";
+    public void UserReset() {
+        try (Connection conn = this.Open_Connection_Player()) {
+            String sql = "UPDATE fatiguesystem_user SET player_point=0";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, player_UUID.toString());
-            pstmt.setInt(2, 0);
             pstmt.executeUpdate();
             pstmt.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }

@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.hwabeag.fatiguesystem.config.ConfigManager;
 import org.hwabeag.fatiguesystem.database.user.SelectUser;
@@ -24,6 +25,34 @@ public class HuntEvent implements Listener {
     FileConfiguration Config = ConfigManager.getConfig("setting");
     String Prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("fatigue-system.prefix")));
     FileConfiguration PlayerConfig = ConfigManager.getConfig("player");
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player damager)) return;
+        if (!event.isCancelled()) {
+            if (Config.getBoolean("check-event.hunt")) {
+                String name = damager.getName();
+                if (Objects.equals(Config.getString("database.type"), "mysql")) {
+                    int point = 0;
+                    if (User_Select.UserSelect(damager) == 0) {
+                        point = Select_User_List.get(damager.getUniqueId().toString()).getPlayerPoint();
+                    } else {
+                        damager.sendMessage(Prefix + " 당신의 데이터가 존재하지 않습니다.");
+                        return;
+                    }
+                    if (point > 2000) {
+                        event.setCancelled(true);
+                        damager.sendActionBar(Prefix + " 피로도로 인해 작업할 수 없습니다.");
+                    }
+                } else {
+                    if (PlayerConfig.getInt("피로도." + name) > 2000) {
+                        event.setCancelled(true);
+                        damager.sendActionBar(Prefix + " 피로도로 인해 작업할 수 없습니다.");
+                    }
+                }
+            }
+        }
+    }
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {

@@ -1,15 +1,19 @@
 package org.hwabeag.fatiguesystem.events;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.hwabeag.fatiguesystem.config.ConfigManager;
 import org.hwabeag.fatiguesystem.database.user.SelectUser;
 import org.hwabeag.fatiguesystem.database.user.UpdateUser;
 import org.hwabeag.fatiguesystem.database.utils.fatiguesystem_user;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -24,6 +28,35 @@ public class FishingEvent implements Listener {
     FileConfiguration Config = ConfigManager.getConfig("setting");
     String Prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(Config.getString("fatigue-system.prefix")));
     FileConfiguration PlayerConfig = ConfigManager.getConfig("player");
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        String name = player.getName();
+        @NotNull ItemStack item = player.getInventory().getItemInMainHand();
+        if (Config.getBoolean("check-event.fishing")) {
+            if (item.getType().equals(Material.FISHING_ROD)) {
+                if (Objects.equals(Config.getString("database.type"), "mysql")) {
+                    int point = 0;
+                    if (User_Select.UserSelect(player) == 0) {
+                        point = Select_User_List.get(player.getUniqueId().toString()).getPlayerPoint();
+                    } else {
+                        player.sendMessage(Prefix + " 당신의 데이터가 존재하지 않습니다.");
+                        return;
+                    }
+                    if (point >= 2000) {
+                        event.setCancelled(true);
+                        player.sendActionBar(Prefix + " 피로도로 인해 작업할 수 없습니다.");
+                    }
+                } else {
+                    if (PlayerConfig.getInt("피로도." + name) >= 2000) {
+                        event.setCancelled(true);
+                        player.sendActionBar(Prefix + " 피로도로 인해 작업할 수 없습니다.");
+                    }
+                }
+            }
+        }
+    }
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {

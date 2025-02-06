@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.hwabeag.fatiguesystem.config.ConfigManager;
-import org.hwabeag.fatiguesystem.database.item.AllSelectItem;
 import org.hwabeag.fatiguesystem.database.item.DeleteItem;
 import org.hwabeag.fatiguesystem.database.item.InsertItem;
 import org.hwabeag.fatiguesystem.database.item.SelectItem;
@@ -254,23 +253,13 @@ public class FatigueSettingCommand implements TabCompleter, @Nullable CommandExe
                 }
             }
             if (args[0].equalsIgnoreCase("회복템목록")) {
-                if (Objects.equals(Config.getString("database.type"), "mysql")) {
-                    ItemListGUI inv = null;
-                    try {
-                        inv = new ItemListGUI();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    inv.open(player);
-                } else {
-                    player.sendMessage(Prefix + " 회복 아이템 목록");
-                    for (String ItemName : Objects.requireNonNull(ItemConfig.getConfigurationSection("list")).getKeys(false)) {
-                        if (ItemConfig.getItemStack("list." + ItemName) != null) {
-                            player.sendMessage(Prefix + " " + ItemName);
-                        }
-                    }
-                    player.sendMessage(Prefix + " 모든 아이템을 불러왔습니다.");
+                ItemListGUI inv = null;
+                try {
+                    inv = new ItemListGUI();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
+                inv.open(player);
                 return true;
             }
             player.sendMessage(Prefix + " /피로도설정 지급 [닉네임] - 플레이어에게 피로도 아이템을 지급합니다.");

@@ -9,6 +9,7 @@ import org.hwabeag.fatiguesystem.database.item.DeleteItem;
 import org.hwabeag.fatiguesystem.database.user.UpdateUser;
 import org.hwabeag.fatiguesystem.events.*;
 import org.hwabeag.fatiguesystem.expansions.FatigueSystemExpansion;
+import org.hwabeag.fatiguesystem.schedules.FatigueTask;
 
 import java.util.Objects;
 
@@ -56,6 +57,7 @@ public final class FatigueSystem extends JavaPlugin {
             new UpdateUser().Open_Connection_Player();
             new DeleteItem().Open_Connection_Item();
         }
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new FatigueTask(), 20 * 30, 20 * 30);
     }
 
     @Override
